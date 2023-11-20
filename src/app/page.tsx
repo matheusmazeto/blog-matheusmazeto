@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Home</div>
+  return <div className="font-gotham text-6xl">WRITING</div>
 }
