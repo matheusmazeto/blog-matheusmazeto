@@ -1,5 +1,6 @@
 'use client'
 
+import { formatDate } from '@/lib/utils'
 import { allBlogs } from 'contentlayer/generated'
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer.js'
 import { title } from 'process'
@@ -11,56 +12,46 @@ export default function Home() {
 
   console.log({ posts })
   return (
-    <div className="font-gotham text-6xl">
-      WRITING
-      {posts.slice(0, 5).map((post) => {
-        const { slug, date, title, summary, tags } = post
-        return (
-          <li key={slug} className="py-12">
-            <article>
-              <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-                <dl>
-                  <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>{date.toString()}</time>
-                  </dd>
-                </dl>
-                <div className="space-y-5 xl:col-span-3">
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-bold leading-8 tracking-tight">
-                        <Link
-                          href={`/blog/${slug}`}
-                          className="text-gray-900 dark:text-gray-100"
-                        >
-                          {title}
-                        </Link>
-                      </h2>
-                      {/* <div className="flex flex-wrap">
-                        {tags.map((tag) => (
-                          <Tag key={tag} text={tag} />
-                        ))}
-                      </div> */}
-                    </div>
-                    <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                      {summary}
-                    </div>
+    <div className="mx-auto max-w-prose space-y-10 px-4 md:space-y-16">
+      <div className="space-y-7">
+        <h1 className="text-2xl font-black text-white">matheusmazeto.com</h1>
+        <section className="space-y-3 text-sm">
+          <p>made in brazil • software engineer • computer scientist</p>
+          <p className="text-gray-300">
+            algorithms • computer science fundamentals
+            <br />
+            front-end • browsers • ui • front-end tooling
+          </p>
+        </section>
+      </div>
+
+      <section>
+        {/* <h2 className="text-2xl font-black">blog posts</h2> */}
+        <ul className="space-y-10">
+          {posts.map((post, index) => {
+            const hideElementOnFirstOcurrence = index === 0
+            return (
+              <div key={post.slug} className="space-y-10">
+                {hideElementOnFirstOcurrence ? null : (
+                  <hr className="h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-800 to-transparent opacity-25 dark:opacity-100" />
+                )}
+                <li className="flex flex-col space-y-2">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="text-4xl font-black text-blue-600 underline transition-all delay-75 hover:text-[38px]"
+                  >
+                    {post.title}
+                  </Link>
+                  <div className="text-sm font-light text-white">
+                    <time>{formatDate(post.date)}</time>
+                    <p>{post.summary}</p>
                   </div>
-                  <div className="text-base font-medium leading-6">
-                    <Link
-                      href={`/blog/${slug}`}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                      aria-label={`Read more: "${title}"`}
-                    >
-                      Read more &rarr;
-                    </Link>
-                  </div>
-                </div>
+                </li>
               </div>
-            </article>
-          </li>
-        )
-      })}
+            )
+          })}
+        </ul>
+      </section>
     </div>
   )
 }
